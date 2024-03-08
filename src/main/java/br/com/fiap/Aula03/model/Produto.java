@@ -1,6 +1,6 @@
 package br.com.fiap.Aula03.model;
 
-import br.com.fiap.Aula03.dto.CadastroMercadoDto;
+import br.com.fiap.Aula03.dto.CadastroProdutoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -9,12 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-
 @Entity
-public class Mercado {
+public class Produto {
 
     @Id
     @GeneratedValue
@@ -22,10 +20,13 @@ public class Mercado {
 
     private String name;
 
-    private CategoriaMercado categoria;
+    private Double price;
 
-    public Mercado(CadastroMercadoDto mercadoDto) {
-        name = mercadoDto.nome();
-        categoria = mercadoDto.categoria();
+    private Integer amount;
+
+    public Produto(CadastroProdutoDto produtoDto) {
+        name = produtoDto.name();
+        price = produtoDto.price();
+        amount = produtoDto.amount();
     }
 }

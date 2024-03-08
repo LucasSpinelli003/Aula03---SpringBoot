@@ -1,15 +1,14 @@
 package br.com.fiap.Aula03.controller;
 
 import br.com.fiap.Aula03.dto.CadastroMercadoDto;
+import br.com.fiap.Aula03.dto.DetalhesMercadoDto;
 import br.com.fiap.Aula03.model.CategoriaMercado;
 import br.com.fiap.Aula03.model.Mercado;
 import br.com.fiap.Aula03.repository.MercadoRepository;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -21,10 +20,11 @@ public class MercadoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Mercado> cadastrar(@RequestBody Mercado mercadoDto, UriComponentsBuilder   uri){
-        mercadoRepository.save(mercadoDto);
-    var url = uri.path("/mercados/{id}").buildAndExpand(mercadoDto.getId()).toUri();
-    return ResponseEntity.created(url).body(mercadoDto);
+    public ResponseEntity<DetalhesMercadoDto> cadastrar(@RequestBody CadastroMercadoDto mercadoDto, UriComponentsBuilder uri){
+        var mercado = new Mercado(mercadoDto);
+        mercadoRepository.save(mercado);
+        var url = uri.path("/mercados/{id}").buildAndExpand(mercado.getId()).toUri();
+        return ResponseEntity.created(url).body(new DetalhesMercadoDto(mercado));
     }
     @GetMapping
     public Mercado get(){
