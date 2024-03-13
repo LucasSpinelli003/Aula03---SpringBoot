@@ -2,14 +2,20 @@ package br.com.fiap.Aula03.controller;
 
 import br.com.fiap.Aula03.dto.CadastroMercadoDto;
 import br.com.fiap.Aula03.dto.DetalhesMercadoDto;
-import br.com.fiap.Aula03.model.CategoriaMercado;
+import br.com.fiap.Aula03.dto.ListagemMercadoDto;
 import br.com.fiap.Aula03.model.Mercado;
 import br.com.fiap.Aula03.repository.MercadoRepository;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/mercados")
@@ -27,8 +33,17 @@ public class MercadoController {
         return ResponseEntity.created(url).body(new DetalhesMercadoDto(mercado));
     }
     @GetMapping
-    public Mercado get(){
-        return new Mercado(1, "Assai", CategoriaMercado.HIPER);
+    public ResponseEntity<List<ListagemMercadoDto>> listar(Pageable pageable){
+        var lista = mercadoRepository.findAll(pageable).stream().map(ListagemMercadoDto::new).toList();
+        return ResponseEntity.ok(lista);
+
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ListagemMercadoDto> pesquisar(@PathVariable("id") Integer id){
+        var mercado = mercadoRepository.getReferenceById(id);
+        return ResponseEntity.ok(new ListagemMercadoDto(mercado));
+    }
+
 
 }

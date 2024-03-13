@@ -24,8 +24,13 @@ public class Mercado {
 
     private CategoriaMercado categoria;
 
+    private String cnpj;
+    private Double faturamento;
+
     public Mercado(CadastroMercadoDto mercadoDto) {
         name = mercadoDto.nome();
         categoria = mercadoDto.categoria();
+        cnpj = mercadoDto.cnpj();
+        faturamento = mercadoDto.faturamento();
     }
 }
