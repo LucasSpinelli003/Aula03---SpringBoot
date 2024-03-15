@@ -1,9 +1,9 @@
 package br.com.fiap.Aula03.controller;
 
-import br.com.fiap.Aula03.dto.CadastroProdutoDto;
-import br.com.fiap.Aula03.dto.DetalhesProdutoDto;
-import br.com.fiap.Aula03.dto.ListagemMercadoDto;
-import br.com.fiap.Aula03.dto.ListagemProdutoDto;
+import br.com.fiap.Aula03.dto.produto.AtualizacaoProdutoDto;
+import br.com.fiap.Aula03.dto.produto.CadastroProdutoDto;
+import br.com.fiap.Aula03.dto.produto.DetalhesProdutoDto;
+import br.com.fiap.Aula03.dto.produto.ListagemProdutoDto;
 import br.com.fiap.Aula03.model.Produto;
 import br.com.fiap.Aula03.repository.ProdutoRepository;
 
@@ -19,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
-
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -43,6 +42,22 @@ public class ProdutoController {
         var produto = produtoRepository.getReferenceById(id);
         return ResponseEntity.ok(new ListagemProdutoDto(produto));
     }
+
+    @PutMapping("{id}")
+    @Transactional
+    public ResponseEntity<DetalhesProdutoDto> atualizar(@PathVariable("id") Integer id, @RequestBody AtualizacaoProdutoDto atualizacaoProdutoDto){
+        var produto = produtoRepository.getReferenceById(id);
+        produto.atualizaProduto(atualizacaoProdutoDto);
+        return ResponseEntity.ok(new DetalhesProdutoDto(produto));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleta(@PathVariable("id") Integer id){
+        produtoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 
 

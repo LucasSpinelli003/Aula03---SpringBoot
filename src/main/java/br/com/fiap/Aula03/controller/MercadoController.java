@@ -1,11 +1,11 @@
 package br.com.fiap.Aula03.controller;
 
-import br.com.fiap.Aula03.dto.CadastroMercadoDto;
-import br.com.fiap.Aula03.dto.DetalhesMercadoDto;
-import br.com.fiap.Aula03.dto.ListagemMercadoDto;
+import br.com.fiap.Aula03.dto.mercado.AtualizacaoMercadoDto;
+import br.com.fiap.Aula03.dto.mercado.CadastroMercadoDto;
+import br.com.fiap.Aula03.dto.mercado.DetalhesMercadoDto;
+import br.com.fiap.Aula03.dto.mercado.ListagemMercadoDto;
 import br.com.fiap.Aula03.model.Mercado;
 import br.com.fiap.Aula03.repository.MercadoRepository;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/mercados")
@@ -38,12 +36,24 @@ public class MercadoController {
         return ResponseEntity.ok(lista);
 
     }
-
     @GetMapping("{id}")
     public ResponseEntity<ListagemMercadoDto> pesquisar(@PathVariable("id") Integer id){
         var mercado = mercadoRepository.getReferenceById(id);
         return ResponseEntity.ok(new ListagemMercadoDto(mercado));
     }
 
+    @PutMapping("{id}")
+    @Transactional
+    public ResponseEntity<DetalhesMercadoDto> atualiza(@PathVariable("id") Integer id, @RequestBody AtualizacaoMercadoDto atualizacaoMercadoDto){
+        var mercado = mercadoRepository.getReferenceById(id);
+        mercado.atualizaDados(atualizacaoMercadoDto);
+        return ResponseEntity.ok(new DetalhesMercadoDto(mercado));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deletar(@PathVariable("id") Integer id){
+        mercadoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

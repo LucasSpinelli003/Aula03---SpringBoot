@@ -1,6 +1,7 @@
 package br.com.fiap.Aula03.model;
 
-import br.com.fiap.Aula03.dto.CadastroProdutoDto;
+import br.com.fiap.Aula03.dto.produto.AtualizacaoProdutoDto;
+import br.com.fiap.Aula03.dto.produto.CadastroProdutoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -28,5 +29,17 @@ public class Produto {
         name = produtoDto.name();
         price = produtoDto.price();
         amount = produtoDto.amount();
+    }
+
+    public void atualizaProduto(AtualizacaoProdutoDto atualizacaoProdutoDto) {
+        if(atualizacaoProdutoDto.name() != null){
+            name = atualizacaoProdutoDto.name();
+        }
+        if(atualizacaoProdutoDto.price() != null){
+            price = atualizacaoProdutoDto.price();
+        }
+        if(atualizacaoProdutoDto.amount() != null){
+            amount = atualizacaoProdutoDto.amount();
+        }
     }
 }
